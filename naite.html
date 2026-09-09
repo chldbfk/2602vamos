@@ -1,0 +1,722 @@
+<title>나이테</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@400;500;600;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#e7e6da;
+    --surface:#fbfaf3;
+    --surface-2:#f1efe2;
+    --ink:#2b2420;
+    --ink-soft:#6b6255;
+    --moss:#3f5d48;
+    --moss-soft:#dce5da;
+    --amber:#c98a3e;
+    --amber-soft:#f3e2c4;
+    --rose:#b65c48;
+    --line:#dad7c7;
+    --shadow: 0 30px 60px -30px rgba(43,36,32,.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1b1712;
+      --surface:#241f19;
+      --surface-2:#2e2820;
+      --ink:#ede8dc;
+      --ink-soft:#a79c89;
+      --moss:#6fa37e;
+      --moss-soft:#253328;
+      --amber:#e0a050;
+      --amber-soft:#3a2e1c;
+      --rose:#d97e68;
+      --line:#3a3226;
+      --shadow: 0 30px 70px -30px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1b1712;
+    --surface:#241f19;
+    --surface-2:#2e2820;
+    --ink:#ede8dc;
+    --ink-soft:#a79c89;
+    --moss:#6fa37e;
+    --moss-soft:#253328;
+    --amber:#e0a050;
+    --amber-soft:#3a2e1c;
+    --rose:#d97e68;
+    --line:#3a3226;
+    --shadow: 0 30px 70px -30px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  body{
+    background:
+      repeating-radial-gradient(circle at 50% 38%,
+        color-mix(in srgb, var(--moss) 7%, transparent) 0px,
+        color-mix(in srgb, var(--moss) 7%, transparent) 1px,
+        transparent 1px, transparent 34px),
+      var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans KR', 'Malgun Gothic', sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:22px;
+    padding:56px 20px 72px;
+  }
+
+  .masthead{ text-align:center; max-width:420px; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:.68rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+  }
+  .wordmark{
+    font-family:'Hahmlet', serif;
+    font-weight:600;
+    font-size:2.3rem;
+    letter-spacing:.02em;
+    margin:0;
+    text-wrap:balance;
+  }
+  .tagline{
+    margin:8px 0 0;
+    color:var(--ink-soft);
+    font-size:.92rem;
+  }
+
+  /* ---------- device ---------- */
+  .device{
+    position:relative;
+    width:min(390px, 92vw);
+    aspect-ratio:390/844;
+    background:var(--surface);
+    border-radius:46px;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .notch{
+    position:absolute;
+    top:14px; left:50%; transform:translateX(-50%);
+    width:96px; height:26px;
+    background:#0b0906;
+    border-radius:14px;
+    z-index:20;
+  }
+  .statusbar{
+    flex:none;
+    height:50px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    padding:0 24px 8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:.78rem;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .statusbar .icons{ display:flex; align-items:center; gap:5px; }
+  .sig{ display:flex; align-items:flex-end; gap:2px; height:9px; }
+  .sig span{ width:3px; background:var(--ink); border-radius:1px; }
+  .sig span:nth-child(1){height:4px;} .sig span:nth-child(2){height:6px;}
+  .sig span:nth-child(3){height:8px;} .sig span:nth-child(4){height:9px;}
+  .batt{ width:22px; height:11px; border:1.3px solid var(--ink); border-radius:3px; position:relative; padding:1.5px; }
+  .batt::after{ content:""; position:absolute; right:-4px; top:3px; width:2px; height:5px; background:var(--ink); border-radius:0 1px 1px 0; }
+  .batt i{ display:block; width:70%; height:100%; background:var(--ink); border-radius:1px; }
+
+  .icon{ width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; display:block; }
+
+  .view{ flex:1; min-height:0; display:flex; flex-direction:column; }
+  .view[hidden]{ display:none; }
+
+  .sticky{
+    flex:none;
+    position:sticky; top:0; z-index:10;
+    background:var(--surface);
+    border-bottom:1px solid var(--line);
+    padding:6px 22px 14px;
+  }
+  .sticky-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .sticky h1{ font-family:'Hahmlet',serif; font-weight:600; font-size:1.28rem; margin:0; }
+  .sticky p{ margin:3px 0 0; font-size:.78rem; color:var(--ink-soft); }
+  .icon-btn{
+    width:36px; height:36px; border-radius:50%;
+    border:1px solid var(--line); background:var(--surface-2);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ink); cursor:pointer; flex:none;
+  }
+  .icon-btn:hover{ background:var(--moss-soft); }
+  .icon-btn:focus-visible, button:focus-visible, .tab:focus-visible{ outline:2px solid var(--moss); outline-offset:2px; }
+
+  .scroll{
+    flex:1; min-height:0; overflow-y:auto;
+    padding:20px 22px 26px;
+    display:flex; flex-direction:column; gap:26px;
+    scrollbar-width:thin; scrollbar-color:var(--line) transparent;
+  }
+
+  /* ---- profile: identity ---- */
+  .identity{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; padding-top:4px; }
+  .avatar-wrap{ position:relative; width:104px; height:104px; margin-bottom:6px; }
+  .avatar-wrap svg.rings{ position:absolute; inset:-30px; width:164px; height:164px; }
+  .avatar{
+    position:absolute; inset:0; border-radius:50%;
+    background:var(--moss); color:var(--surface);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Hahmlet',serif; font-weight:600; font-size:2.15rem;
+  }
+  .identity h2{ margin:2px 0 0; font-family:'Hahmlet',serif; font-size:1.2rem; font-weight:600; }
+  .handle{ margin:0; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; font-size:.78rem; }
+  .bio{ margin:2px 0 0; font-size:.86rem; color:var(--ink-soft); max-width:280px; line-height:1.55; }
+
+  .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .stat{ background:var(--surface-2); border-radius:16px; padding:12px 8px; text-align:center; }
+  .stat .num{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:1.15rem; font-variant-numeric:tabular-nums; }
+  .stat .lbl{ margin-top:2px; font-size:.7rem; color:var(--ink-soft); }
+
+  .section-title{ display:flex; align-items:baseline; justify-content:space-between; }
+  .section-title h3{ margin:0; font-family:'Hahmlet',serif; font-size:1.02rem; font-weight:600; }
+  .section-title .see-all{ font-size:.74rem; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; }
+
+  .habits{ display:flex; flex-direction:column; gap:10px; margin-top:12px; }
+  .habit{
+    display:flex; align-items:center; gap:12px;
+    background:var(--surface-2); border-radius:16px; padding:11px 12px;
+  }
+  .habit .ring{ width:38px; height:38px; flex:none; transform:rotate(-90deg); }
+  .habit .ring circle{ fill:none; stroke-width:4; }
+  .habit .ring .track{ stroke:var(--line); }
+  .habit .ring .fill{ stroke:var(--moss); stroke-linecap:round; transition:stroke-dasharray .4s ease; }
+  .habit .meta{ flex:1; min-width:0; }
+  .habit .meta .name{ font-size:.9rem; font-weight:600; }
+  .habit .meta .sub{ margin-top:2px; font-size:.72rem; color:var(--ink-soft); display:flex; align-items:center; gap:5px; }
+  .habit .meta .sub .icon{ width:13px; height:13px; }
+  .check{
+    width:34px; height:34px; border-radius:50%; flex:none;
+    border:1.6px solid var(--moss); background:transparent; color:var(--moss);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .check .icon{ width:17px; height:17px; opacity:0; transition:opacity .15s ease; }
+  .check.done{ background:var(--moss); }
+  .check.done .icon{ opacity:1; stroke:var(--surface); }
+
+  .badges{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:12px; }
+  .badge{ background:var(--surface-2); border-radius:16px; padding:14px 6px 10px; text-align:center; }
+  .badge .glyph{
+    width:44px; height:44px; margin:0 auto 6px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--amber-soft); color:var(--amber);
+  }
+  .badge.locked .glyph{ background:var(--surface); color:var(--ink-soft); border:1px dashed var(--line); }
+  .badge.locked .name{ color:var(--ink-soft); }
+  .badge .name{ font-size:.72rem; font-weight:600; line-height:1.3; }
+  .badge .sub{ font-size:.62rem; color:var(--ink-soft); margin-top:2px; }
+
+  .timeline{ margin-top:10px; display:flex; flex-direction:column; }
+  .tl-item{ display:flex; gap:12px; padding-bottom:16px; position:relative; }
+  .tl-item::before{
+    content:""; position:absolute; left:5px; top:14px; bottom:0;
+    border-left:1.5px dashed var(--line);
+  }
+  .tl-item:last-child::before{ display:none; }
+  .tl-dot{ width:11px; height:11px; border-radius:50%; background:var(--amber); margin-top:4px; flex:none; }
+  .tl-date{ font-family:'IBM Plex Mono',monospace; font-size:.68rem; color:var(--ink-soft); }
+  .tl-text{ font-size:.84rem; margin-top:3px; line-height:1.5; }
+
+  /* ---- community ---- */
+  .challenge{
+    background:linear-gradient(155deg, var(--moss), color-mix(in srgb, var(--moss) 78%, black 12%));
+    color:var(--surface);
+    border-radius:20px; padding:18px;
+  }
+  .challenge .eyebrow2{ font-family:'IBM Plex Mono',monospace; font-size:.65rem; letter-spacing:.12em; text-transform:uppercase; opacity:.8; }
+  .challenge h3{ font-family:'Hahmlet',serif; margin:6px 0 4px; font-size:1.15rem; }
+  .challenge p{ margin:0 0 14px; font-size:.8rem; opacity:.9; line-height:1.5; }
+  .stack{ display:flex; align-items:center; }
+  .stack .who{
+    width:26px; height:26px; border-radius:50%; border:2px solid var(--moss);
+    background:var(--amber-soft); color:#5b3d17;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.6rem; font-weight:700; margin-left:-8px;
+  }
+  .stack .who:first-child{ margin-left:0; }
+  .stack .more{ margin-left:8px; font-size:.72rem; opacity:.85; }
+  .prog{ margin-top:12px; }
+  .prog .bar{ height:7px; border-radius:99px; background:rgba(255,255,255,.25); overflow:hidden; }
+  .prog .bar i{ display:block; height:100%; width:57%; background:var(--amber); border-radius:99px; }
+  .prog .lbl{ margin-top:6px; font-size:.7rem; opacity:.85; font-family:'IBM Plex Mono',monospace; }
+  .join-row{ display:flex; justify-content:flex-end; margin-top:12px; }
+  .join-btn{
+    border:none; border-radius:99px; padding:9px 18px;
+    background:var(--surface); color:var(--moss); font-weight:600; font-size:.82rem;
+    display:flex; align-items:center; gap:6px; cursor:pointer;
+  }
+  .join-btn.joined{ background:var(--amber); color:#3a2609; }
+  .join-btn .icon{ width:15px; height:15px; }
+
+  .feed{ display:flex; flex-direction:column; gap:14px; margin-top:12px; }
+  .post{ background:var(--surface-2); border-radius:18px; padding:14px; }
+  .post-head{ display:flex; align-items:center; gap:10px; }
+  .post-avatar{
+    width:36px; height:36px; border-radius:50%; flex:none;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Hahmlet',serif; font-weight:600; font-size:.85rem; color:var(--surface);
+  }
+  .post-head .who{ flex:1; min-width:0; }
+  .post-head .who .n{ font-size:.85rem; font-weight:600; }
+  .post-head .who .t{ font-size:.7rem; color:var(--ink-soft); }
+  .tag{
+    font-family:'IBM Plex Mono',monospace; font-size:.66rem; padding:3px 8px;
+    border-radius:99px; background:var(--moss-soft); color:var(--moss); flex:none;
+  }
+  .post-text{ margin:10px 0 12px; font-size:.85rem; line-height:1.6; }
+  .post-foot{ display:flex; align-items:center; gap:16px; }
+  .react{ display:flex; align-items:center; gap:5px; background:none; border:none; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; font-size:.76rem; cursor:pointer; padding:2px; }
+  .react .icon{ width:17px; height:17px; }
+  .react.liked{ color:var(--rose); }
+  .react.liked .icon{ fill:var(--rose); stroke:var(--rose); }
+
+  .react.comment-toggle{ cursor:pointer; }
+  .react.comment-toggle[aria-expanded="true"]{ color:var(--moss); }
+  .comments{ margin-top:12px; padding-top:12px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:10px; }
+  .comment-list{ display:flex; flex-direction:column; gap:10px; }
+  .comment{ display:flex; gap:8px; }
+  .comment .av{ width:26px; height:26px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center; font-family:'Hahmlet',serif; font-weight:600; font-size:.68rem; color:var(--surface); }
+  .comment .body{ flex:1; min-width:0; }
+  .comment .nm{ font-size:.76rem; font-weight:600; }
+  .comment .tx{ font-size:.8rem; color:var(--ink-soft); margin-top:1px; line-height:1.5; }
+  .comment-form{ display:flex; gap:8px; }
+  .comment-form input{ flex:1; min-width:0; border:1px solid var(--line); background:var(--surface); border-radius:99px; padding:8px 14px; font-size:.8rem; color:var(--ink); font-family:inherit; }
+  .comment-form input::placeholder{ color:var(--ink-soft); }
+  .comment-form input:focus-visible{ outline:2px solid var(--moss); outline-offset:1px; }
+  .comment-form button{ border:none; background:var(--moss); color:var(--surface); border-radius:99px; padding:8px 15px; font-size:.78rem; font-weight:600; cursor:pointer; flex:none; }
+  .comment-form button:disabled{ opacity:.4; cursor:default; }
+
+  .leaderboard{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+  .rank{ display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:14px; background:var(--surface-2); }
+  .rank.me{ background:var(--amber-soft); }
+  .rank .no{ font-family:'IBM Plex Mono',monospace; font-weight:600; width:16px; color:var(--ink-soft); }
+  .rank .av{ width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Hahmlet',serif; font-weight:600; font-size:.78rem; color:var(--surface); flex:none; }
+  .rank .nm{ flex:1; font-size:.84rem; font-weight:600; }
+  .rank .dd{ font-family:'IBM Plex Mono',monospace; font-size:.76rem; color:var(--ink-soft); display:flex; align-items:center; gap:4px; }
+  .rank .dd .icon{ width:14px; height:14px; color:var(--amber); }
+
+  /* ---- tab bar ---- */
+  .tabbar{
+    flex:none; display:flex; border-top:1px solid var(--line);
+    background:var(--surface); padding:8px 6px 16px;
+  }
+  .tab{
+    flex:1; background:none; border:none; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    color:var(--ink-soft); padding:6px 2px; font-family:'IBM Plex Sans KR',sans-serif;
+    font-size:.65rem; position:relative;
+  }
+  .tab .dot{ position:absolute; top:-2px; width:4px; height:4px; border-radius:50%; background:var(--moss); opacity:0; }
+  .tab.active{ color:var(--moss); font-weight:600; }
+  .tab.active .dot{ opacity:1; }
+
+  .toast{
+    position:absolute; left:50%; bottom:86px; transform:translate(-50%,10px);
+    background:var(--ink); color:var(--bg); font-size:.76rem;
+    padding:9px 16px; border-radius:99px; white-space:nowrap;
+    opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;
+    z-index:30;
+  }
+  .toast.show{ opacity:1; transform:translate(-50%,0); }
+
+  .hint{ max-width:390px; text-align:center; font-size:.78rem; color:var(--ink-soft); }
+  .hint b{ color:var(--ink); font-weight:600; }
+
+  .scroll::-webkit-scrollbar{ width:5px; }
+  .scroll::-webkit-scrollbar-thumb{ background:var(--line); border-radius:99px; }
+</style>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h5v-6h2v6h5v-9"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6"/><circle cx="17" cy="9" r="2.4"/><path d="M15.8 14.2c2.4.4 4.2 2.6 4.2 5.8"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-4 3.4-7.2 7.5-7.2s7.5 3.2 7.5 7.2"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.4" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="m20 20-4.8-4.8"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 10a6 6 0 0 1 12 0c0 4 1.5 5.4 1.5 5.4H4.5S6 14 6 10Z"/><path d="M10 18.5a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.4-4.6-9.4-9.2C1.3 7.6 3 4.5 6.3 4.2c2-.2 3.6 1 5.7 3.3 2.1-2.3 3.7-3.5 5.7-3.3 3.3.3 5 3.4 3.7 6.6C19.4 15.4 12 20 12 20Z"/></symbol>
+  <symbol id="i-comment" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2.2"/><path d="M8.2 10.5V7.8a3.8 3.8 0 0 1 7.6 0v2.7"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3.5s5 4 5 8.6a5 5 0 1 1-10 0c0-1.3.6-2 1.2-2.6.2 1.4 1.1 2 1.8 1.6-.6-2.4.7-5 2-7.6Z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.6"/><path d="M12 3v2.2M12 18.8V21M21 12h-2.2M5.2 12H3M18.2 5.8l-1.5 1.5M7.3 16.7l-1.5 1.5M18.2 18.2l-1.5-1.5M7.3 7.3 5.8 5.8"/></symbol>
+  <symbol id="i-ring" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.4"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 13v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/><path d="M8 5H5a3 3 0 0 0 3 4M16 5h3a3 3 0 0 1-3 4"/><path d="M12 13v3M9 20h6M10 16.5h4v3.5h-4z"/></symbol>
+</svg>
+
+<div class="masthead">
+  <p class="eyebrow">Interactive Prototype · 자기계발 앱</p>
+  <h1 class="wordmark">나이테</h1>
+  <p class="tagline">매일이 자라 나이테가 됩니다</p>
+</div>
+
+<div class="device">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span>9:41</span>
+    <span class="icons">
+      <span class="sig"><span></span><span></span><span></span><span></span></span>
+      <span class="batt"><i></i></span>
+    </span>
+  </div>
+
+  <!-- PROFILE VIEW -->
+  <section class="view" id="view-profile">
+    <div class="sticky">
+      <div class="sticky-row">
+        <div><h1>마이 페이지</h1><p>나의 성장을 기록해요</p></div>
+        <button class="icon-btn" type="button" aria-label="설정" onclick="toast('설정 화면은 준비 중이에요')">
+          <svg class="icon" width="18" height="18"><use href="#i-more"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <div class="identity">
+        <div class="avatar-wrap">
+          <svg class="rings" viewBox="0 0 164 164" aria-hidden="true">
+            <circle cx="82" cy="82" r="52" fill="none" stroke="var(--amber)" stroke-width="2" opacity=".85"/>
+            <circle cx="82" cy="82" r="60" fill="none" stroke="var(--moss)" stroke-width="2.4" opacity=".55"/>
+            <circle cx="82" cy="82" r="68" fill="none" stroke="var(--amber)" stroke-width="1.6" opacity=".35"/>
+            <circle cx="82" cy="82" r="76" fill="none" stroke="var(--moss)" stroke-width="1.6" opacity=".2"/>
+          </svg>
+          <div class="avatar">서</div>
+        </div>
+        <h2>이서준</h2>
+        <p class="handle">@seojun_grows</p>
+        <p class="bio">작은 습관이 쌓이면 굵은 나이테가 된다고 믿어요. 오늘로 100일째 기록 중.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="num">D+47</div><div class="lbl">연속 기록</div></div>
+        <div class="stat"><div class="num">92%</div><div class="lbl">이번 달 완료율</div></div>
+        <div class="stat"><div class="num">128</div><div class="lbl">함께 자라는 친구</div></div>
+      </div>
+
+      <div>
+        <div class="section-title"><h3>이번 달 나이테</h3><span class="see-all">전체보기</span></div>
+        <div class="habits" id="habit-list">
+
+          <div class="habit" data-total="7" data-week="5" data-streak="12">
+            <svg class="ring" viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="16"/><circle class="fill" cx="20" cy="20" r="16" stroke-dasharray="71.8 100.53"/></svg>
+            <div class="meta">
+              <div class="name">아침 러닝 6km</div>
+              <div class="sub"><svg class="icon" width="13" height="13"><use href="#i-flame"/></svg><span class="streak-txt">12일째</span> · 이번 주 <span class="week-txt">5</span>/7일</div>
+            </div>
+            <button class="check" type="button" aria-label="아침 러닝 오늘 완료 체크" onclick="toggleHabit(this)">
+              <svg class="icon" width="17" height="17"><use href="#i-check"/></svg>
+            </button>
+          </div>
+
+          <div class="habit" data-total="7" data-week="6" data-streak="21">
+            <svg class="ring" viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="16"/><circle class="fill" cx="20" cy="20" r="16" stroke-dasharray="86.2 100.53"/></svg>
+            <div class="meta">
+              <div class="name">독서 30분</div>
+              <div class="sub"><svg class="icon" width="13" height="13"><use href="#i-flame"/></svg><span class="streak-txt">21일째</span> · 이번 주 <span class="week-txt">6</span>/7일</div>
+            </div>
+            <button class="check done" type="button" aria-label="독서 오늘 완료 체크 해제" onclick="toggleHabit(this)">
+              <svg class="icon" width="17" height="17"><use href="#i-check"/></svg>
+            </button>
+          </div>
+
+          <div class="habit" data-total="7" data-week="4" data-streak="8">
+            <svg class="ring" viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="16"/><circle class="fill" cx="20" cy="20" r="16" stroke-dasharray="57.4 100.53"/></svg>
+            <div class="meta">
+              <div class="name">아침 명상 10분</div>
+              <div class="sub"><svg class="icon" width="13" height="13"><use href="#i-flame"/></svg><span class="streak-txt">8일째</span> · 이번 주 <span class="week-txt">4</span>/7일</div>
+            </div>
+            <button class="check" type="button" aria-label="명상 오늘 완료 체크" onclick="toggleHabit(this)">
+              <svg class="icon" width="17" height="17"><use href="#i-check"/></svg>
+            </button>
+          </div>
+
+          <div class="habit" data-total="7" data-week="7" data-streak="34">
+            <svg class="ring" viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="16"/><circle class="fill" cx="20" cy="20" r="16" stroke-dasharray="100.53 100.53"/></svg>
+            <div class="meta">
+              <div class="name">영어 회화 스터디</div>
+              <div class="sub"><svg class="icon" width="13" height="13"><use href="#i-flame"/></svg><span class="streak-txt">34일째</span> · 이번 주 <span class="week-txt">7</span>/7일</div>
+            </div>
+            <button class="check done" type="button" aria-label="영어 회화 오늘 완료 체크 해제" onclick="toggleHabit(this)">
+              <svg class="icon" width="17" height="17"><use href="#i-check"/></svg>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><h3>획득한 나이테</h3><span class="see-all">6개 중 4개</span></div>
+        <div class="badges">
+          <div class="badge"><div class="glyph"><svg class="icon" width="20" height="20"><use href="#i-ring"/></svg></div><div class="name">첫 나이테</div><div class="sub">7일 연속</div></div>
+          <div class="badge"><div class="glyph"><svg class="icon" width="20" height="20"><use href="#i-ring"/></svg></div><div class="name">굵은 나이테</div><div class="sub">30일 연속</div></div>
+          <div class="badge locked"><div class="glyph"><svg class="icon" width="18" height="18"><use href="#i-lock"/></svg></div><div class="name">백년 나이테</div><div class="sub">47/100일</div></div>
+          <div class="badge"><div class="glyph"><svg class="icon" width="20" height="20"><use href="#i-sun"/></svg></div><div class="name">새벽형 인간</div><div class="sub">아침 습관 20회</div></div>
+          <div class="badge locked"><div class="glyph"><svg class="icon" width="18" height="18"><use href="#i-lock"/></svg></div><div class="name">완벽한 한 주</div><div class="sub">주 7/7 달성</div></div>
+          <div class="badge"><div class="glyph"><svg class="icon" width="20" height="20"><use href="#i-users"/></svg></div><div class="name">나눔왕</div><div class="sub">댓글 50개</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><h3>성장 기록</h3></div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">2026.09.08</div><div class="tl-text">아침 러닝 12일 연속 달성! 다리가 조금씩 가벼워지는 느낌이 든다.</div></div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">2026.09.03</div><div class="tl-text">'백년 나이테' 배지까지 47일 남았다. 절반 가까이 왔다.</div></div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">2026.08.27</div><div class="tl-text">영어 회화 스터디 한 달 완주. 처음으로 프리토킹에 성공했다.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY VIEW -->
+  <section class="view" id="view-community" hidden>
+    <div class="sticky">
+      <div class="sticky-row">
+        <div><h1>함께 자라는 숲</h1><p>1,204명이 오늘도 기록 중</p></div>
+        <div style="display:flex; gap:8px;">
+          <button class="icon-btn" type="button" aria-label="검색" onclick="toast('검색 기능은 준비 중이에요')">
+            <svg class="icon" width="17" height="17"><use href="#i-search"/></svg>
+          </button>
+          <button class="icon-btn" type="button" aria-label="알림" onclick="toast('새 알림이 없어요')">
+            <svg class="icon" width="17" height="17"><use href="#i-bell"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <div class="challenge">
+        <div class="eyebrow2">이번 주 챌린지</div>
+        <h3>미라클모닝 7일</h3>
+        <p>아침 7시 전에 하루를 시작하고 인증해보세요.</p>
+        <div class="stack">
+          <span class="who">하</span><span class="who">준</span><span class="who">민</span><span class="who">아</span><span class="who">+</span>
+          <span class="more">247명 참여 중</span>
+        </div>
+        <div class="prog">
+          <div class="bar"><i></i></div>
+          <div class="lbl">이번 주 4/7일 완료</div>
+        </div>
+        <div class="join-row">
+          <button class="join-btn" type="button" onclick="toggleJoin(this)">참여하기</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><h3>오늘의 기록</h3></div>
+        <div class="feed">
+
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar" style="background:var(--moss)">하</div>
+              <div class="who"><div class="n">김하늘 · @haneul.log</div><div class="t">12분 전</div></div>
+              <span class="tag">독서</span>
+            </div>
+            <p class="post-text">오늘은 니체의 &lt;차라투스트라는 이렇게 말했다&gt;를 30분 읽었어요. 어려운데 문장이 자꾸 눈에 남네요.</p>
+            <div class="post-foot">
+              <button class="react" type="button" onclick="toggleLike(this,24)"><svg class="icon" width="17" height="17"><use href="#i-heart"/></svg><span class="cnt">24</span></button>
+              <button class="react comment-toggle" type="button" aria-expanded="false" onclick="toggleComments(this)"><svg class="icon" width="17" height="17"><use href="#i-comment"/></svg><span class="cnt">6</span></button>
+              <span class="react" style="margin-left:auto"><svg class="icon" width="16" height="16"><use href="#i-share"/></svg></span>
+            </div>
+            <div class="comments" hidden>
+              <div class="comment-list">
+                <div class="comment"><span class="av" style="background:var(--amber)">준</span><div class="body"><div class="nm">박준서</div><div class="tx">니체 어렵죠 ㅠㅠ 그래도 30분이나 읽으신 거 대단해요!</div></div></div>
+                <div class="comment"><span class="av" style="background:var(--rose)">민</span><div class="body"><div class="nm">최민아</div><div class="tx">저도 다음 책으로 도전해볼래요 :)</div></div></div>
+              </div>
+              <form class="comment-form" onsubmit="submitComment(event)">
+                <input type="text" placeholder="댓글을 남겨보세요" aria-label="댓글 입력" maxlength="140">
+                <button type="submit">등록</button>
+              </form>
+            </div>
+          </article>
+
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar" style="background:var(--amber)">준</div>
+              <div class="who"><div class="n">박준서 · @junseo.run</div><div class="t">47분 전</div></div>
+              <span class="tag">러닝</span>
+            </div>
+            <p class="post-text">새벽 5시 기상 스트릭 30일 달성! 처음엔 죽을 것 같았는데 이제는 몸이 먼저 눈을 떠요.</p>
+            <div class="post-foot">
+              <button class="react liked" type="button" onclick="toggleLike(this,57)"><svg class="icon" width="17" height="17"><use href="#i-heart"/></svg><span class="cnt">58</span></button>
+              <button class="react comment-toggle" type="button" aria-expanded="false" onclick="toggleComments(this)"><svg class="icon" width="17" height="17"><use href="#i-comment"/></svg><span class="cnt">13</span></button>
+              <span class="react" style="margin-left:auto"><svg class="icon" width="16" height="16"><use href="#i-share"/></svg></span>
+            </div>
+            <div class="comments" hidden>
+              <div class="comment-list">
+                <div class="comment"><span class="av" style="background:var(--moss)">하</span><div class="body"><div class="nm">김하늘</div><div class="tx">30일 완주 축하해요! 저도 자극받아서 내일부터 도전해볼게요</div></div></div>
+                <div class="comment"><span class="av" style="background:var(--rose)">민</span><div class="body"><div class="nm">최민아</div><div class="tx">미라클모닝 챌린지 같이 해요</div></div></div>
+              </div>
+              <form class="comment-form" onsubmit="submitComment(event)">
+                <input type="text" placeholder="댓글을 남겨보세요" aria-label="댓글 입력" maxlength="140">
+                <button type="submit">등록</button>
+              </form>
+            </div>
+          </article>
+
+          <article class="post">
+            <div class="post-head">
+              <div class="post-avatar" style="background:var(--rose)">민</div>
+              <div class="who"><div class="n">최민아 · @mina.write</div><div class="t">2시간 전</div></div>
+              <span class="tag">글쓰기</span>
+            </div>
+            <p class="post-text">매일 세 줄 일기 100일째. 짧아도 매일 쓰는 게 힘이라는 걸 요즘 자꾸 느낍니다.</p>
+            <div class="post-foot">
+              <button class="react" type="button" onclick="toggleLike(this,41)"><svg class="icon" width="17" height="17"><use href="#i-heart"/></svg><span class="cnt">41</span></button>
+              <button class="react comment-toggle" type="button" aria-expanded="false" onclick="toggleComments(this)"><svg class="icon" width="17" height="17"><use href="#i-comment"/></svg><span class="cnt">9</span></button>
+              <span class="react" style="margin-left:auto"><svg class="icon" width="16" height="16"><use href="#i-share"/></svg></span>
+            </div>
+            <div class="comments" hidden>
+              <div class="comment-list">
+                <div class="comment"><span class="av" style="background:var(--amber)">준</span><div class="body"><div class="nm">박준서</div><div class="tx">세 줄이라도 매일 쓰는 게 진짜 힘이죠. 저도 오늘부터 시작!</div></div></div>
+              </div>
+              <form class="comment-form" onsubmit="submitComment(event)">
+                <input type="text" placeholder="댓글을 남겨보세요" aria-label="댓글 입력" maxlength="140">
+                <button type="submit">등록</button>
+              </form>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><h3>이주의 나이테 랭킹</h3><svg class="icon" width="16" height="16" style="color:var(--amber)"><use href="#i-trophy"/></svg></div>
+        <div class="leaderboard">
+          <div class="rank"><span class="no">1</span><span class="av" style="background:var(--amber)">준</span><span class="nm">박준서</span><span class="dd"><svg class="icon" width="14" height="14"><use href="#i-flame"/></svg>61일</span></div>
+          <div class="rank me"><span class="no">2</span><span class="av" style="background:var(--moss)">서</span><span class="nm">이서준 (나)</span><span class="dd"><svg class="icon" width="14" height="14"><use href="#i-flame"/></svg>47일</span></div>
+          <div class="rank"><span class="no">3</span><span class="av" style="background:var(--rose)">민</span><span class="nm">최민아</span><span class="dd"><svg class="icon" width="14" height="14"><use href="#i-flame"/></svg>39일</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="tabbar">
+    <button class="tab" type="button" onclick="toast('홈 화면은 준비 중이에요')">
+      <span class="dot"></span><svg class="icon" width="21" height="21"><use href="#i-home"/></svg>홈
+    </button>
+    <button class="tab active" id="tab-community" type="button" onclick="switchView('community')">
+      <span class="dot"></span><svg class="icon" width="21" height="21"><use href="#i-users"/></svg>커뮤니티
+    </button>
+    <button class="tab" id="tab-profile" type="button" onclick="switchView('profile')">
+      <span class="dot"></span><svg class="icon" width="21" height="21"><use href="#i-user"/></svg>프로필
+    </button>
+    <button class="tab" type="button" onclick="toast('더보기 화면은 준비 중이에요')">
+      <span class="dot"></span><svg class="icon" width="21" height="21"><use href="#i-more"/></svg>더보기
+    </button>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<p class="hint">하단 탭의 <b>커뮤니티</b>와 <b>프로필</b>을 눌러 두 화면을 오가며 확인해보세요.</p>
+
+<script>
+  function switchView(name){
+    document.getElementById('view-profile').hidden = name !== 'profile';
+    document.getElementById('view-community').hidden = name !== 'community';
+    document.getElementById('tab-profile').classList.toggle('active', name === 'profile');
+    document.getElementById('tab-community').classList.toggle('active', name === 'community');
+    document.querySelector('#view-' + name + ' .scroll').scrollTop = 0;
+  }
+
+  function toggleHabit(btn){
+    const row = btn.closest('.habit');
+    const total = parseInt(row.dataset.total, 10);
+    let week = parseInt(row.dataset.week, 10);
+    let streak = parseInt(row.dataset.streak, 10);
+    const wasDone = btn.classList.contains('done');
+
+    week = wasDone ? Math.max(0, week - 1) : Math.min(total, week + 1);
+    streak = wasDone ? Math.max(0, streak - 1) : streak + 1;
+
+    row.dataset.week = week;
+    row.dataset.streak = streak;
+    btn.classList.toggle('done', !wasDone);
+    btn.setAttribute('aria-label', (!wasDone ? '오늘 완료 체크 해제' : '오늘 완료 체크'));
+
+    row.querySelector('.week-txt').textContent = week;
+    row.querySelector('.streak-txt').textContent = streak + '일째';
+
+    const circumference = 100.53;
+    const pct = total ? week / total : 0;
+    row.querySelector('.ring .fill').setAttribute('stroke-dasharray', (circumference * pct).toFixed(1) + ' ' + circumference);
+  }
+
+  function toggleComments(btn){
+    const post = btn.closest('.post');
+    const panel = post.querySelector('.comments');
+    const willShow = panel.hidden;
+    panel.hidden = !willShow;
+    btn.setAttribute('aria-expanded', String(willShow));
+    if (willShow) post.querySelector('.comment-form input').focus();
+  }
+
+  function submitComment(event){
+    event.preventDefault();
+    const form = event.target;
+    const input = form.querySelector('input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const post = form.closest('.post');
+    const item = document.createElement('div');
+    item.className = 'comment';
+    const av = document.createElement('span');
+    av.className = 'av';
+    av.style.background = 'var(--moss)';
+    av.textContent = '서';
+    const body = document.createElement('div');
+    body.className = 'body';
+    const nm = document.createElement('div');
+    nm.className = 'nm';
+    nm.textContent = '이서준';
+    const tx = document.createElement('div');
+    tx.className = 'tx';
+    tx.textContent = text;
+    body.append(nm, tx);
+    item.append(av, body);
+    post.querySelector('.comment-list').appendChild(item);
+
+    const cnt = post.querySelector('.comment-toggle .cnt');
+    cnt.textContent = parseInt(cnt.textContent, 10) + 1;
+
+    input.value = '';
+    input.focus();
+  }
+
+  function toggleLike(btn, base){
+    const liked = btn.classList.toggle('liked');
+    btn.querySelector('.cnt').textContent = liked ? base + 1 : base;
+  }
+
+  function toggleJoin(btn){
+    const joined = btn.classList.toggle('joined');
+    btn.textContent = joined ? '참여 중' : '참여하기';
+  }
+
+  let toastTimer;
+  function toast(msg){
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 1700);
+  }
+</script>
