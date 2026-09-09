@@ -16,6 +16,11 @@
     --rose:#b65c48;
     --line:#dad7c7;
     --shadow: 0 30px 60px -30px rgba(43,36,32,.35);
+    --g-amber: linear-gradient(155deg, var(--amber), color-mix(in srgb, var(--amber) 55%, var(--rose) 45%));
+    --g-moss: linear-gradient(155deg, var(--moss), color-mix(in srgb, var(--moss) 60%, var(--amber) 40%));
+    --g-rose: linear-gradient(155deg, var(--rose), color-mix(in srgb, var(--rose) 55%, var(--moss) 45%));
+    --g-ink: linear-gradient(155deg, var(--ink-soft), var(--ink));
+    --g-dual: linear-gradient(155deg, var(--moss), var(--amber));
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -167,8 +172,8 @@
   }
 
   /* ---- profile: identity ---- */
-  .identity{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; padding-top:4px; }
-  .avatar-wrap{ position:relative; width:104px; height:104px; margin-bottom:6px; }
+  .profile-head{ display:flex; align-items:flex-start; gap:14px; padding-top:4px; }
+  .avatar-wrap{ position:relative; width:104px; height:104px; margin-bottom:6px; flex:none; }
   .avatar-wrap svg.rings{ position:absolute; inset:-30px; width:164px; height:164px; }
   .avatar{
     position:absolute; inset:0; border-radius:50%;
@@ -176,14 +181,112 @@
     display:flex; align-items:center; justify-content:center;
     font-family:'Hahmlet',serif; font-weight:600; font-size:2.15rem;
   }
-  .identity h2{ margin:2px 0 0; font-family:'Hahmlet',serif; font-size:1.2rem; font-weight:600; }
-  .handle{ margin:0; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; font-size:.78rem; }
-  .bio{ margin:2px 0 0; font-size:.86rem; color:var(--ink-soft); max-width:280px; line-height:1.55; }
+  .profile-info{ flex:1; min-width:0; padding-top:8px; }
+  .profile-info h2{ margin:2px 0 0; font-family:'Hahmlet',serif; font-size:1.18rem; font-weight:600; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .privacy-badge{
+    display:inline-flex; align-items:center; gap:4px;
+    font-family:'IBM Plex Sans KR',sans-serif; font-size:.64rem; font-weight:600;
+    color:var(--ink-soft); background:var(--surface-2); border:1px solid var(--line);
+    border-radius:99px; padding:3px 9px 3px 7px;
+  }
+  .handle{ margin:3px 0 10px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; font-size:.76rem; }
+  .follow-row{ display:flex; gap:16px; font-size:.82rem; color:var(--ink-soft); }
+  .follow-row b{ color:var(--ink); font-weight:600; font-family:'IBM Plex Mono',monospace; margin-right:4px; }
 
-  .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-  .stat{ background:var(--surface-2); border-radius:16px; padding:12px 8px; text-align:center; }
-  .stat .num{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:1.15rem; font-variant-numeric:tabular-nums; }
-  .stat .lbl{ margin-top:2px; font-size:.7rem; color:var(--ink-soft); }
+  .quicknav{ display:grid; grid-template-columns:repeat(3,1fr); background:var(--surface-2); border-radius:18px; padding:14px 4px; }
+  .quicknav button{
+    background:none; border:none; cursor:pointer; color:var(--ink);
+    display:flex; flex-direction:column; align-items:center; gap:7px;
+    font-family:'IBM Plex Sans KR',sans-serif; font-size:.72rem; font-weight:600; padding:2px 4px;
+  }
+  .quicknav button + button{ border-left:1px dotted var(--line); }
+  .quicknav .ic{
+    width:38px; height:38px; border-radius:50%; background:var(--surface); color:var(--moss);
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .groups{ display:flex; flex-direction:column; gap:10px; margin-top:12px; }
+  .group-row{ display:flex; align-items:center; gap:12px; background:var(--surface-2); border-radius:16px; padding:11px 12px; }
+  .group-row .gicon{ width:42px; height:42px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex:none; }
+  .group-row .gmeta{ flex:1; min-width:0; }
+  .group-row .gname{ font-size:.86rem; font-weight:600; }
+  .group-row .gsub{ font-size:.72rem; color:var(--ink-soft); margin-top:2px; }
+  .find-group{
+    margin-top:2px; width:100%; border:1.4px dashed var(--line); background:none; border-radius:14px;
+    padding:11px; color:var(--ink-soft); font-size:.82rem; font-weight:600; cursor:pointer;
+    font-family:'IBM Plex Sans KR',sans-serif;
+  }
+  .find-group:hover{ border-color:var(--moss); color:var(--moss); }
+
+  .bio-card{ background:var(--surface-2); border-radius:18px; padding:16px; margin-top:12px; }
+  .bio-row{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+  .bio-text{ font-size:.86rem; line-height:1.6; flex:1; margin:0; }
+  .bio-form{ display:flex; flex-direction:column; gap:8px; }
+  .bio-form textarea{
+    resize:none; border:1px solid var(--line); border-radius:12px; padding:10px 12px;
+    font:inherit; font-size:.84rem; color:var(--ink); background:var(--surface); line-height:1.5;
+  }
+  .row-end{ display:flex; justify-content:flex-end; gap:8px; }
+  .btn-ghost{ background:none; border:1px solid var(--line); border-radius:99px; padding:7px 14px; font-size:.76rem; font-weight:600; color:var(--ink-soft); cursor:pointer; font-family:inherit; }
+  .btn-solid{ background:var(--moss); color:var(--surface); border:none; border-radius:99px; padding:7px 14px; font-size:.76rem; font-weight:600; cursor:pointer; font-family:inherit; }
+  .goal-label{ margin-top:14px; font-size:.68rem; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; letter-spacing:.08em; text-transform:uppercase; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:9px; }
+  .chip{
+    border:1.4px solid var(--line); background:var(--surface); border-radius:99px; padding:7px 13px;
+    font-size:.78rem; font-weight:600; color:var(--ink-soft); cursor:pointer; font-family:'IBM Plex Sans KR',sans-serif;
+  }
+  .chip.on{ background:var(--moss); border-color:var(--moss); color:var(--surface); }
+
+  .schedule{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+  .sch-item{ display:flex; align-items:center; gap:12px; background:var(--surface-2); border-radius:14px; padding:9px 10px 9px 12px; }
+  .sch-date{ flex:none; width:34px; text-align:center; font-family:'IBM Plex Mono',monospace; color:var(--amber); }
+  .sch-date .d{ font-size:1.05rem; font-weight:600; line-height:1; }
+  .sch-date .w{ font-size:.6rem; color:var(--ink-soft); margin-top:2px; }
+  .sch-title{ flex:1; min-width:0; font-size:.83rem; }
+  .sch-remove{ background:none; border:none; color:var(--ink-soft); cursor:pointer; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none; }
+  .sch-remove:hover{ background:var(--surface); color:var(--rose); }
+  .sch-form{ display:flex; gap:8px; margin-top:10px; }
+  .sch-form input[type="date"]{ flex:none; width:128px; border:1px solid var(--line); border-radius:10px; padding:8px; font-size:.74rem; background:var(--surface); color:var(--ink); font-family:'IBM Plex Mono',monospace; }
+  .sch-form input[type="text"]{ flex:1; min-width:0; border:1px solid var(--line); border-radius:10px; padding:8px 10px; font-size:.8rem; background:var(--surface); color:var(--ink); font-family:inherit; }
+  .sch-form button{ flex:none; border:none; background:var(--moss); color:var(--surface); border-radius:10px; padding:0 14px; font-size:.78rem; font-weight:600; cursor:pointer; }
+
+  .sch-note{ margin:8px 0 0; font-size:.72rem; color:var(--amber); display:flex; align-items:center; gap:5px; }
+  .sch-preview{ display:flex; gap:8px; margin-top:12px; }
+  .sch-preview .seg{
+    flex:1; border:1px solid var(--line); background:var(--surface); border-radius:99px; padding:7px 4px;
+    font-size:.72rem; font-weight:600; color:var(--ink-soft); cursor:pointer; font-family:'IBM Plex Sans KR',sans-serif;
+  }
+  .sch-preview .seg.on{ background:var(--moss-soft); border-color:var(--moss); color:var(--moss); }
+  .schedule{ margin-top:10px; }
+  .sch-locked{
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;
+    padding:28px 12px; margin-top:10px; background:var(--surface-2); border-radius:16px; color:var(--ink-soft);
+  }
+  .sch-locked .icon{ width:24px; height:24px; }
+  .sch-locked p{ margin:0; font-size:.8rem; line-height:1.6; }
+
+  /* ---- settings modal ---- */
+  .modal-backdrop{
+    position:absolute; inset:0; z-index:50;
+    background:color-mix(in srgb, var(--ink) 45%, transparent);
+    display:flex; align-items:flex-end;
+  }
+  .modal-sheet{ width:100%; background:var(--surface); border-radius:24px 24px 0 0; padding:10px 20px 22px; }
+  .modal-handle{ width:36px; height:4px; border-radius:99px; background:var(--line); margin:6px auto 16px; }
+  .modal-sheet h3{ margin:0 0 16px; font-family:'Hahmlet',serif; font-size:1.05rem; font-weight:600; }
+  .setting-row{ display:flex; align-items:center; justify-content:space-between; gap:14px; }
+  .setting-title{ font-size:.88rem; font-weight:600; }
+  .setting-desc{ margin-top:4px; font-size:.74rem; color:var(--ink-soft); line-height:1.55; max-width:230px; }
+  .switch{
+    flex:none; width:44px; height:26px; border-radius:99px; background:var(--line);
+    border:none; position:relative; cursor:pointer; padding:3px;
+  }
+  .switch .knob{
+    display:block; width:20px; height:20px; border-radius:50%; background:var(--surface);
+    box-shadow:0 1px 3px rgba(0,0,0,.25); transition:transform .18s ease;
+  }
+  .switch.on{ background:var(--moss); }
+  .switch.on .knob{ transform:translateX(18px); }
 
   .section-title{ display:flex; align-items:baseline; justify-content:space-between; }
   .section-title h3{ margin:0; font-family:'Hahmlet',serif; font-size:1.02rem; font-weight:600; }
@@ -235,6 +338,47 @@
   .tl-text{ font-size:.84rem; margin-top:3px; line-height:1.5; }
 
   /* ---- community ---- */
+  .crew-search{
+    flex:1; min-width:0; display:flex; align-items:center; gap:8px;
+    background:var(--surface-2); border-radius:99px; padding:9px 14px; color:var(--ink-soft);
+  }
+  .crew-search input{
+    flex:1; min-width:0; border:none; background:none; outline:none;
+    font:inherit; font-size:.84rem; color:var(--ink);
+  }
+  .crew-search input::placeholder{ color:var(--ink-soft); }
+
+  .crew-section{ margin-top:2px; }
+  .crew-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:10px; }
+  .crew-head h3{ margin:0; font-family:'Hahmlet',serif; font-size:1.02rem; font-weight:600; }
+  .crew-actions{ display:flex; align-items:center; gap:8px; }
+  .crew-make{
+    background:var(--ink); color:var(--bg); border:none; border-radius:99px;
+    padding:8px 15px; font-size:.76rem; font-weight:600; cursor:pointer; font-family:'IBM Plex Sans KR',sans-serif;
+  }
+  .crew-info{
+    display:flex; align-items:center; gap:5px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:99px; padding:7px 12px 7px 9px; font-size:.72rem; font-weight:600; color:var(--ink-soft);
+    cursor:pointer; font-family:'IBM Plex Sans KR',sans-serif; white-space:nowrap;
+  }
+  .crew-scroll{ display:flex; gap:12px; overflow-x:auto; padding-bottom:2px; }
+  .crew-card{
+    flex:none; width:100px; display:flex; flex-direction:column; align-items:flex-start; gap:7px;
+    background:none; border:none; cursor:pointer; text-align:left; padding:0; font-family:inherit; color:var(--ink);
+  }
+  .crew-thumb{
+    width:100px; height:100px; border-radius:20px; display:flex; align-items:center; justify-content:center; color:var(--surface);
+  }
+  .crew-name{ font-size:.76rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%; }
+  .crew-count{ font-size:.66rem; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; }
+
+  .post-more{ background:none; border:none; color:var(--ink-soft); cursor:pointer; padding:4px; flex:none; display:flex; }
+  .post-media{
+    margin:10px 0; aspect-ratio:16/10; border-radius:16px;
+    display:flex; align-items:center; justify-content:center; color:var(--surface);
+  }
+  .post-tag{ display:inline-block; margin-bottom:12px; }
+
   .challenge{
     background:linear-gradient(155deg, var(--moss), color-mix(in srgb, var(--moss) 78%, black 12%));
     color:var(--surface);
@@ -359,6 +503,9 @@
   <symbol id="i-ring" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.4"/></symbol>
   <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 13v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6"/></symbol>
   <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/><path d="M8 5H5a3 3 0 0 0 3 4M16 5h3a3 3 0 0 1-3 4"/><path d="M12 13v3M9 20h6M10 16.5h4v3.5h-4z"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3Z"/><path d="M13.5 7.5l3 3"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5c2-1 4.5-1 7 0v13c-2.5-1-5-1-7 0v-13Z"/><path d="M20 5.5c-2-1-4.5-1-7 0v13c2.5-1 5-1 7 0v-13Z"/></symbol>
 </svg>
 
 <div class="masthead">
@@ -382,104 +529,120 @@
     <div class="sticky">
       <div class="sticky-row">
         <div><h1>마이 페이지</h1><p>나의 성장을 기록해요</p></div>
-        <button class="icon-btn" type="button" aria-label="설정" onclick="toast('설정 화면은 준비 중이에요')">
+        <button class="icon-btn" type="button" aria-label="설정" onclick="openSettings()">
           <svg class="icon" width="18" height="18"><use href="#i-more"/></svg>
         </button>
       </div>
     </div>
 
     <div class="scroll">
-      <div class="identity">
-        <div class="avatar-wrap">
-          <svg class="rings" viewBox="0 0 164 164" aria-hidden="true">
+      <div class="profile-head">
+        <div class="avatar-wrap" style="width:76px;height:76px;margin:0;">
+          <svg class="rings" viewBox="0 0 164 164" aria-hidden="true" style="inset:-24px;width:124px;height:124px;">
             <circle cx="82" cy="82" r="52" fill="none" stroke="var(--amber)" stroke-width="2" opacity=".85"/>
             <circle cx="82" cy="82" r="60" fill="none" stroke="var(--moss)" stroke-width="2.4" opacity=".55"/>
             <circle cx="82" cy="82" r="68" fill="none" stroke="var(--amber)" stroke-width="1.6" opacity=".35"/>
-            <circle cx="82" cy="82" r="76" fill="none" stroke="var(--moss)" stroke-width="1.6" opacity=".2"/>
           </svg>
-          <div class="avatar">서</div>
+          <div class="avatar" style="font-size:1.5rem;">서</div>
         </div>
-        <h2>이서준</h2>
-        <p class="handle">@seojun_grows</p>
-        <p class="bio">작은 습관이 쌓이면 굵은 나이테가 된다고 믿어요. 오늘로 100일째 기록 중.</p>
-      </div>
-
-      <div class="stats">
-        <div class="stat"><div class="num">D+47</div><div class="lbl">연속 기록</div></div>
-        <div class="stat"><div class="num">92%</div><div class="lbl">이번 달 완료율</div></div>
-        <div class="stat"><div class="num">128</div><div class="lbl">함께 자라는 친구</div></div>
-      </div>
-
-      <div>
-        <div class="section-title"><h3>이번 달 나이테</h3><span class="see-all">전체보기</span></div>
-        <div class="habits" id="habit-list">
-
-          <div class="habit" data-total="7" data-week="5" data-streak="12">
-            <svg class="ring" viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="16"/><circle class="fill" cx="20" cy="20" r="16" stroke-dasharray="71.8 100.53"/></svg>
-            <div class="meta">
-              <div class="name">아침 러닝 6km</div>
-              <div class="sub"><svg class="icon" width="13" height="13"><use href="#i-flame"/></svg><span class="streak-txt">12일째</span> · 이번 주 <span class="week-txt">5</span>/7일</div>
-            </div>
-            <button class="check" type="button" aria-label="아침 러닝 오늘 완료 체크" onclick="toggleHabit(this)">
-              <svg class="icon" width="17" height="17"><use href="#i-check"/></svg>
-            </button>
-          </div>
-
-          <div class="habit" data-total="7" data-week="6" data-streak="21">
-            <svg class="ring" viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="16"/><circle class="fill" cx="20" cy="20" r="16" stroke-dasharray="86.2 100.53"/></svg>
-            <div class="meta">
-              <div class="name">독서 30분</div>
-              <div class="sub"><svg class="icon" width="13" height="13"><use href="#i-flame"/></svg><span class="streak-txt">21일째</span> · 이번 주 <span class="week-txt">6</span>/7일</div>
-            </div>
-            <button class="check done" type="button" aria-label="독서 오늘 완료 체크 해제" onclick="toggleHabit(this)">
-              <svg class="icon" width="17" height="17"><use href="#i-check"/></svg>
-            </button>
-          </div>
-
-          <div class="habit" data-total="7" data-week="4" data-streak="8">
-            <svg class="ring" viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="16"/><circle class="fill" cx="20" cy="20" r="16" stroke-dasharray="57.4 100.53"/></svg>
-            <div class="meta">
-              <div class="name">아침 명상 10분</div>
-              <div class="sub"><svg class="icon" width="13" height="13"><use href="#i-flame"/></svg><span class="streak-txt">8일째</span> · 이번 주 <span class="week-txt">4</span>/7일</div>
-            </div>
-            <button class="check" type="button" aria-label="명상 오늘 완료 체크" onclick="toggleHabit(this)">
-              <svg class="icon" width="17" height="17"><use href="#i-check"/></svg>
-            </button>
-          </div>
-
-          <div class="habit" data-total="7" data-week="7" data-streak="34">
-            <svg class="ring" viewBox="0 0 40 40"><circle class="track" cx="20" cy="20" r="16"/><circle class="fill" cx="20" cy="20" r="16" stroke-dasharray="100.53 100.53"/></svg>
-            <div class="meta">
-              <div class="name">영어 회화 스터디</div>
-              <div class="sub"><svg class="icon" width="13" height="13"><use href="#i-flame"/></svg><span class="streak-txt">34일째</span> · 이번 주 <span class="week-txt">7</span>/7일</div>
-            </div>
-            <button class="check done" type="button" aria-label="영어 회화 오늘 완료 체크 해제" onclick="toggleHabit(this)">
-              <svg class="icon" width="17" height="17"><use href="#i-check"/></svg>
-            </button>
-          </div>
-
+        <div class="profile-info">
+          <h2>이서준<span class="privacy-badge" id="privacy-badge" hidden><svg class="icon" width="11" height="11"><use href="#i-lock"/></svg>비공개</span></h2>
+          <p class="handle">@seojun_grows</p>
+          <div class="follow-row"><span><b>92</b>팔로잉</span><span><b>154</b>팔로워</span></div>
         </div>
       </div>
 
-      <div>
-        <div class="section-title"><h3>획득한 나이테</h3><span class="see-all">6개 중 4개</span></div>
-        <div class="badges">
-          <div class="badge"><div class="glyph"><svg class="icon" width="20" height="20"><use href="#i-ring"/></svg></div><div class="name">첫 나이테</div><div class="sub">7일 연속</div></div>
-          <div class="badge"><div class="glyph"><svg class="icon" width="20" height="20"><use href="#i-ring"/></svg></div><div class="name">굵은 나이테</div><div class="sub">30일 연속</div></div>
-          <div class="badge locked"><div class="glyph"><svg class="icon" width="18" height="18"><use href="#i-lock"/></svg></div><div class="name">백년 나이테</div><div class="sub">47/100일</div></div>
-          <div class="badge"><div class="glyph"><svg class="icon" width="20" height="20"><use href="#i-sun"/></svg></div><div class="name">새벽형 인간</div><div class="sub">아침 습관 20회</div></div>
-          <div class="badge locked"><div class="glyph"><svg class="icon" width="18" height="18"><use href="#i-lock"/></svg></div><div class="name">완벽한 한 주</div><div class="sub">주 7/7 달성</div></div>
-          <div class="badge"><div class="glyph"><svg class="icon" width="20" height="20"><use href="#i-users"/></svg></div><div class="name">나눔왕</div><div class="sub">댓글 50개</div></div>
+      <div class="quicknav">
+        <button type="button" onclick="jump('sec-groups')"><span class="ic"><svg class="icon" width="18" height="18"><use href="#i-users"/></svg></span>소속 크루</button>
+        <button type="button" onclick="jump('sec-goals')"><span class="ic"><svg class="icon" width="18" height="18"><use href="#i-ring"/></svg></span>목표 분야</button>
+        <button type="button" onclick="jump('sec-schedule')"><span class="ic"><svg class="icon" width="18" height="18"><use href="#i-flame"/></svg></span>이달 일정</button>
+      </div>
+
+      <div id="sec-groups">
+        <div class="section-title"><h3>소속된 크루</h3><span class="see-all">3개 참여 중</span></div>
+        <div class="groups">
+          <div class="group-row">
+            <span class="gicon" style="background:var(--moss)"><svg class="icon" width="20" height="20" style="stroke:var(--surface)"><use href="#i-sun"/></svg></span>
+            <div class="gmeta"><div class="gname">새벽 기상 클럽</div><div class="gsub">멤버 1,204명 · 아침 습관</div></div>
+          </div>
+          <div class="group-row">
+            <span class="gicon" style="background:var(--amber)"><svg class="icon" width="20" height="20" style="stroke:var(--surface)"><use href="#i-ring"/></svg></span>
+            <div class="gmeta"><div class="gname">독서 나이테 모임</div><div class="gsub">멤버 356명 · 독서</div></div>
+          </div>
+          <div class="group-row">
+            <span class="gicon" style="background:var(--rose)"><svg class="icon" width="20" height="20" style="stroke:var(--surface)"><use href="#i-flame"/></svg></span>
+            <div class="gmeta"><div class="gname">미니멀 러닝 크루</div><div class="gsub">멤버 812명 · 운동</div></div>
+          </div>
+          <button class="find-group" type="button" onclick="toast('크루 탐색 화면은 준비 중이에요')">+ 새 크루 찾아보기</button>
         </div>
       </div>
 
-      <div>
-        <div class="section-title"><h3>성장 기록</h3></div>
-        <div class="timeline">
-          <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">2026.09.08</div><div class="tl-text">아침 러닝 12일 연속 달성! 다리가 조금씩 가벼워지는 느낌이 든다.</div></div></div>
-          <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">2026.09.03</div><div class="tl-text">'백년 나이테' 배지까지 47일 남았다. 절반 가까이 왔다.</div></div></div>
-          <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">2026.08.27</div><div class="tl-text">영어 회화 스터디 한 달 완주. 처음으로 프리토킹에 성공했다.</div></div></div>
+      <div id="sec-goals">
+        <div class="section-title"><h3>소개 · 목표 분야</h3></div>
+        <div class="bio-card">
+          <div class="bio-row" id="bio-view">
+            <p class="bio-text" id="bio-text">작은 습관이 쌓이면 굵은 나이테가 된다고 믿어요.</p>
+            <button class="icon-btn" type="button" aria-label="소개 수정" style="width:30px;height:30px;flex:none;" onclick="editBio()">
+              <svg class="icon" width="14" height="14"><use href="#i-edit"/></svg>
+            </button>
+          </div>
+          <form class="bio-form" id="bio-form" hidden onsubmit="saveBio(event)">
+            <textarea id="bio-input" rows="2" maxlength="60">작은 습관이 쌓이면 굵은 나이테가 된다고 믿어요.</textarea>
+            <div class="row-end">
+              <button type="button" class="btn-ghost" onclick="cancelBio()">취소</button>
+              <button type="submit" class="btn-solid">저장</button>
+            </div>
+          </form>
+
+          <div class="goal-label">목표 분야 · 탭해서 선택</div>
+          <div class="chips">
+            <button type="button" class="chip on" onclick="toggleChip(this)">체력관리</button>
+            <button type="button" class="chip on" onclick="toggleChip(this)">커리어 성장</button>
+            <button type="button" class="chip on" onclick="toggleChip(this)">마인드셋</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">재정관리</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">인간관계</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">창작활동</button>
+          </div>
         </div>
+      </div>
+
+      <div id="sec-schedule">
+        <div class="section-title"><h3>이번 달 중요 일정</h3><span class="see-all">9월</span></div>
+        <p class="sch-note" id="sch-note" hidden>비공개 계정이에요 · 맞팔로우한 친구만 볼 수 있어요</p>
+
+        <div class="sch-preview" id="sch-preview" hidden>
+          <button type="button" class="seg on" onclick="setPreview('mutual', this)">맞팔로우가 볼 때</button>
+          <button type="button" class="seg" onclick="setPreview('other', this)">그 외 사람이 볼 때</button>
+        </div>
+
+        <div class="schedule" id="schedule-list">
+          <div class="sch-item">
+            <div class="sch-date"><div class="d">14</div><div class="w">월</div></div>
+            <div class="sch-title">TOEIC 정기시험 접수 마감</div>
+            <button class="sch-remove" type="button" aria-label="일정 삭제" onclick="this.closest('.sch-item').remove()"><svg class="icon" width="13" height="13"><use href="#i-close"/></svg></button>
+          </div>
+          <div class="sch-item">
+            <div class="sch-date"><div class="d">20</div><div class="w">일</div></div>
+            <div class="sch-title">새벽 기상 클럽 정기 러닝 모임</div>
+            <button class="sch-remove" type="button" aria-label="일정 삭제" onclick="this.closest('.sch-item').remove()"><svg class="icon" width="13" height="13"><use href="#i-close"/></svg></button>
+          </div>
+          <div class="sch-item">
+            <div class="sch-date"><div class="d">28</div><div class="w">월</div></div>
+            <div class="sch-title">9월 성장 회고 작성일</div>
+            <button class="sch-remove" type="button" aria-label="일정 삭제" onclick="this.closest('.sch-item').remove()"><svg class="icon" width="13" height="13"><use href="#i-close"/></svg></button>
+          </div>
+        </div>
+
+        <div class="sch-locked" id="sch-locked" hidden>
+          <svg class="icon" width="24" height="24"><use href="#i-lock"/></svg>
+          <p>비공개 일정이에요<br>맞팔로우를 하면 볼 수 있어요</p>
+        </div>
+
+        <form class="sch-form" id="sch-form" onsubmit="addSchedule(event)">
+          <input type="date" id="sch-date" aria-label="일정 날짜" required>
+          <input type="text" id="sch-title" placeholder="일정 제목" maxlength="40" required>
+          <button type="submit">추가</button>
+        </form>
       </div>
     </div>
   </section>
@@ -488,33 +651,53 @@
   <section class="view" id="view-community" hidden>
     <div class="sticky">
       <div class="sticky-row">
-        <div><h1>함께 자라는 숲</h1><p>1,204명이 오늘도 기록 중</p></div>
-        <div style="display:flex; gap:8px;">
-          <button class="icon-btn" type="button" aria-label="검색" onclick="toast('검색 기능은 준비 중이에요')">
-            <svg class="icon" width="17" height="17"><use href="#i-search"/></svg>
-          </button>
-          <button class="icon-btn" type="button" aria-label="알림" onclick="toast('새 알림이 없어요')">
-            <svg class="icon" width="17" height="17"><use href="#i-bell"/></svg>
-          </button>
+        <div class="crew-search">
+          <svg class="icon" width="17" height="17"><use href="#i-search"/></svg>
+          <input type="text" placeholder="계정 또는 크루 검색" aria-label="계정 또는 크루 검색">
         </div>
+        <button class="icon-btn" type="button" aria-label="알림" onclick="toast('새 알림이 없어요')">
+          <svg class="icon" width="17" height="17"><use href="#i-bell"/></svg>
+        </button>
       </div>
     </div>
 
     <div class="scroll">
-      <div class="challenge">
-        <div class="eyebrow2">이번 주 챌린지</div>
-        <h3>미라클모닝 7일</h3>
-        <p>아침 7시 전에 하루를 시작하고 인증해보세요.</p>
-        <div class="stack">
-          <span class="who">하</span><span class="who">준</span><span class="who">민</span><span class="who">아</span><span class="who">+</span>
-          <span class="more">247명 참여 중</span>
+      <div class="crew-section">
+        <div class="crew-head">
+          <h3>크루</h3>
+          <div class="crew-actions">
+            <button class="crew-make" type="button" onclick="toast('크루 만들기 화면은 준비 중이에요')">만들기</button>
+            <button class="crew-info" type="button" onclick="toast('크루는 같은 목표를 가진 사람들이 함께 기록을 나누는 소모임이에요')">
+              <svg class="icon" width="14" height="14"><use href="#i-users"/></svg>크루란?
+            </button>
+          </div>
         </div>
-        <div class="prog">
-          <div class="bar"><i></i></div>
-          <div class="lbl">이번 주 4/7일 완료</div>
-        </div>
-        <div class="join-row">
-          <button class="join-btn" type="button" onclick="toggleJoin(this)">참여하기</button>
+        <div class="crew-scroll">
+          <button class="crew-card" type="button" onclick="toast('크루 상세 화면은 준비 중이에요')">
+            <span class="crew-thumb" style="background:var(--g-amber)"><svg class="icon" width="30" height="30"><use href="#i-sun"/></svg></span>
+            <span class="crew-name">새벽 기상 클럽</span>
+            <span class="crew-count">멤버 1,204</span>
+          </button>
+          <button class="crew-card" type="button" onclick="toast('크루 상세 화면은 준비 중이에요')">
+            <span class="crew-thumb" style="background:var(--g-moss)"><svg class="icon" width="30" height="30"><use href="#i-book"/></svg></span>
+            <span class="crew-name">독서 나이테 모임</span>
+            <span class="crew-count">멤버 356</span>
+          </button>
+          <button class="crew-card" type="button" onclick="toast('크루 상세 화면은 준비 중이에요')">
+            <span class="crew-thumb" style="background:var(--g-rose)"><svg class="icon" width="30" height="30"><use href="#i-flame"/></svg></span>
+            <span class="crew-name">미니멀 러닝 크루</span>
+            <span class="crew-count">멤버 812</span>
+          </button>
+          <button class="crew-card" type="button" onclick="toast('크루 상세 화면은 준비 중이에요')">
+            <span class="crew-thumb" style="background:var(--g-ink)"><svg class="icon" width="30" height="30"><use href="#i-trophy"/></svg></span>
+            <span class="crew-name">자격증 스터디 크루</span>
+            <span class="crew-count">멤버 240</span>
+          </button>
+          <button class="crew-card" type="button" onclick="toast('크루 상세 화면은 준비 중이에요')">
+            <span class="crew-thumb" style="background:var(--g-dual)"><svg class="icon" width="30" height="30"><use href="#i-edit"/></svg></span>
+            <span class="crew-name">저녁 글쓰기 모임</span>
+            <span class="crew-count">멤버 128</span>
+          </button>
         </div>
       </div>
 
@@ -526,9 +709,11 @@
             <div class="post-head">
               <div class="post-avatar" style="background:var(--moss)">하</div>
               <div class="who"><div class="n">김하늘 · @haneul.log</div><div class="t">12분 전</div></div>
-              <span class="tag">독서</span>
+              <button class="post-more" type="button" aria-label="게시글 옵션" onclick="toast('게시글 옵션은 준비 중이에요')"><svg class="icon" width="16" height="16"><use href="#i-more"/></svg></button>
             </div>
             <p class="post-text">오늘은 니체의 &lt;차라투스트라는 이렇게 말했다&gt;를 30분 읽었어요. 어려운데 문장이 자꾸 눈에 남네요.</p>
+            <div class="post-media" style="background:var(--g-moss)"><svg class="icon" width="38" height="38"><use href="#i-book"/></svg></div>
+            <span class="tag post-tag">독서 인증</span>
             <div class="post-foot">
               <button class="react" type="button" onclick="toggleLike(this,24)"><svg class="icon" width="17" height="17"><use href="#i-heart"/></svg><span class="cnt">24</span></button>
               <button class="react comment-toggle" type="button" aria-expanded="false" onclick="toggleComments(this)"><svg class="icon" width="17" height="17"><use href="#i-comment"/></svg><span class="cnt">6</span></button>
@@ -550,9 +735,11 @@
             <div class="post-head">
               <div class="post-avatar" style="background:var(--amber)">준</div>
               <div class="who"><div class="n">박준서 · @junseo.run</div><div class="t">47분 전</div></div>
-              <span class="tag">러닝</span>
+              <button class="post-more" type="button" aria-label="게시글 옵션" onclick="toast('게시글 옵션은 준비 중이에요')"><svg class="icon" width="16" height="16"><use href="#i-more"/></svg></button>
             </div>
             <p class="post-text">새벽 5시 기상 스트릭 30일 달성! 처음엔 죽을 것 같았는데 이제는 몸이 먼저 눈을 떠요.</p>
+            <div class="post-media" style="background:var(--g-amber)"><svg class="icon" width="38" height="38"><use href="#i-flame"/></svg></div>
+            <span class="tag post-tag">러닝 인증</span>
             <div class="post-foot">
               <button class="react liked" type="button" onclick="toggleLike(this,57)"><svg class="icon" width="17" height="17"><use href="#i-heart"/></svg><span class="cnt">58</span></button>
               <button class="react comment-toggle" type="button" aria-expanded="false" onclick="toggleComments(this)"><svg class="icon" width="17" height="17"><use href="#i-comment"/></svg><span class="cnt">13</span></button>
@@ -574,9 +761,11 @@
             <div class="post-head">
               <div class="post-avatar" style="background:var(--rose)">민</div>
               <div class="who"><div class="n">최민아 · @mina.write</div><div class="t">2시간 전</div></div>
-              <span class="tag">글쓰기</span>
+              <button class="post-more" type="button" aria-label="게시글 옵션" onclick="toast('게시글 옵션은 준비 중이에요')"><svg class="icon" width="16" height="16"><use href="#i-more"/></svg></button>
             </div>
             <p class="post-text">매일 세 줄 일기 100일째. 짧아도 매일 쓰는 게 힘이라는 걸 요즘 자꾸 느낍니다.</p>
+            <div class="post-media" style="background:var(--g-dual)"><svg class="icon" width="38" height="38"><use href="#i-edit"/></svg></div>
+            <span class="tag post-tag">글쓰기 인증</span>
             <div class="post-foot">
               <button class="react" type="button" onclick="toggleLike(this,41)"><svg class="icon" width="17" height="17"><use href="#i-heart"/></svg><span class="cnt">41</span></button>
               <button class="react comment-toggle" type="button" aria-expanded="false" onclick="toggleComments(this)"><svg class="icon" width="17" height="17"><use href="#i-comment"/></svg><span class="cnt">9</span></button>
@@ -611,10 +800,10 @@
     <button class="tab" type="button" onclick="toast('홈 화면은 준비 중이에요')">
       <span class="dot"></span><svg class="icon" width="21" height="21"><use href="#i-home"/></svg>홈
     </button>
-    <button class="tab active" id="tab-community" type="button" onclick="switchView('community')">
+    <button class="tab" id="tab-community" type="button" onclick="switchView('community')">
       <span class="dot"></span><svg class="icon" width="21" height="21"><use href="#i-users"/></svg>커뮤니티
     </button>
-    <button class="tab" id="tab-profile" type="button" onclick="switchView('profile')">
+    <button class="tab active" id="tab-profile" type="button" onclick="switchView('profile')">
       <span class="dot"></span><svg class="icon" width="21" height="21"><use href="#i-user"/></svg>프로필
     </button>
     <button class="tab" type="button" onclick="toast('더보기 화면은 준비 중이에요')">
@@ -623,6 +812,23 @@
   </nav>
 
   <div class="toast" id="toast"></div>
+
+  <div class="modal-backdrop" id="settings-backdrop" hidden onclick="closeSettings(event)">
+    <div class="modal-sheet" role="dialog" aria-modal="true" aria-label="설정" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <h3>설정</h3>
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">계정 공개 범위</div>
+          <div class="setting-desc" id="privacy-desc">모든 사람이 내 프로필과 일정을 볼 수 있어요.</div>
+        </div>
+        <button class="switch" id="privacy-switch" type="button" role="switch" aria-checked="false" aria-label="비공개 계정 전환" onclick="togglePrivacy()">
+          <span class="knob"></span>
+        </button>
+      </div>
+      <button type="button" class="btn-solid" style="width:100%; margin-top:18px; padding:11px;" onclick="closeSettings()">확인</button>
+    </div>
+  </div>
 </div>
 
 <p class="hint">하단 탭의 <b>커뮤니티</b>와 <b>프로필</b>을 눌러 두 화면을 오가며 확인해보세요.</p>
@@ -657,6 +863,114 @@
     const circumference = 100.53;
     const pct = total ? week / total : 0;
     row.querySelector('.ring .fill').setAttribute('stroke-dasharray', (circumference * pct).toFixed(1) + ' ' + circumference);
+  }
+
+  let isPrivate = false;
+  let previewAs = 'mutual';
+
+  function openSettings(){
+    document.getElementById('settings-backdrop').hidden = false;
+  }
+  function closeSettings(event){
+    document.getElementById('settings-backdrop').hidden = true;
+  }
+
+  function togglePrivacy(){
+    isPrivate = !isPrivate;
+
+    const sw = document.getElementById('privacy-switch');
+    sw.classList.toggle('on', isPrivate);
+    sw.setAttribute('aria-checked', String(isPrivate));
+
+    document.getElementById('privacy-desc').textContent = isPrivate
+      ? '비공개 계정이에요. 맞팔로우한 친구만 내 일정을 볼 수 있어요.'
+      : '모든 사람이 내 프로필과 일정을 볼 수 있어요.';
+
+    document.getElementById('privacy-badge').hidden = !isPrivate;
+    document.getElementById('sch-note').hidden = !isPrivate;
+    document.getElementById('sch-preview').hidden = !isPrivate;
+
+    if (!isPrivate) previewAs = 'mutual';
+    updateScheduleVisibility();
+  }
+
+  function setPreview(view, btn){
+    previewAs = view;
+    document.querySelectorAll('#sch-preview .seg').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    updateScheduleVisibility();
+  }
+
+  function updateScheduleVisibility(){
+    const locked = isPrivate && previewAs === 'other';
+    document.getElementById('schedule-list').hidden = locked;
+    document.getElementById('sch-form').hidden = locked;
+    document.getElementById('sch-locked').hidden = !locked;
+  }
+
+  function jump(id){
+    const el = document.getElementById(id);
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  function editBio(){
+    document.getElementById('bio-view').hidden = true;
+    document.getElementById('bio-form').hidden = false;
+    const input = document.getElementById('bio-input');
+    input.focus();
+    input.select();
+  }
+  function cancelBio(){
+    document.getElementById('bio-form').hidden = true;
+    document.getElementById('bio-view').hidden = false;
+  }
+  function saveBio(event){
+    event.preventDefault();
+    const text = document.getElementById('bio-input').value.trim();
+    if (text) document.getElementById('bio-text').textContent = text;
+    cancelBio();
+  }
+
+  function toggleChip(el){
+    el.classList.toggle('on');
+  }
+
+  function addSchedule(event){
+    event.preventDefault();
+    const dateInput = document.getElementById('sch-date');
+    const titleInput = document.getElementById('sch-title');
+    if (!dateInput.value || !titleInput.value.trim()) return;
+
+    const dow = ['일','월','화','수','목','금','토'];
+    const d = new Date(dateInput.value + 'T00:00:00');
+
+    const item = document.createElement('div');
+    item.className = 'sch-item';
+
+    const dateEl = document.createElement('div');
+    dateEl.className = 'sch-date';
+    dateEl.innerHTML = '<div class="d"></div><div class="w"></div>';
+    dateEl.querySelector('.d').textContent = d.getDate();
+    dateEl.querySelector('.w').textContent = dow[d.getDay()];
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'sch-title';
+    titleEl.textContent = titleInput.value.trim();
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'sch-remove';
+    removeBtn.type = 'button';
+    removeBtn.setAttribute('aria-label', '일정 삭제');
+    removeBtn.innerHTML = '<svg class="icon" width="13" height="13"><use href="#i-close"/></svg>';
+    removeBtn.onclick = () => item.remove();
+
+    item.append(dateEl, titleEl, removeBtn);
+    document.getElementById('schedule-list').appendChild(item);
+
+    dateInput.value = '';
+    titleInput.value = '';
+    titleInput.focus();
   }
 
   function toggleComments(btn){
