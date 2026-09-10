@@ -288,6 +288,54 @@
   .switch.on{ background:var(--moss); }
   .switch.on .knob{ transform:translateX(18px); }
 
+  .field-label{ display:block; font-size:.72rem; font-weight:600; color:var(--ink-soft); margin:14px 0 6px; }
+  .field-label:first-child{ margin-top:0; }
+  .field-input{
+    width:100%; border:1px solid var(--line); border-radius:12px; padding:10px 12px;
+    font:inherit; font-size:.86rem; color:var(--ink); background:var(--surface-2);
+  }
+  .field-input::placeholder{ color:var(--ink-soft); }
+  .field-input:focus-visible{ outline:2px solid var(--moss); outline-offset:1px; }
+  .btn-solid.joined{ background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line); }
+
+  .crew-detail-head{ display:flex; align-items:center; gap:14px; }
+  .crew-detail-info{ flex:1; min-width:0; }
+  .crew-detail-name{ font-family:'Hahmlet',serif; font-size:1.05rem; font-weight:600; margin-bottom:6px; }
+  .crew-detail-intro{ margin:16px 0 20px; font-size:.85rem; color:var(--ink-soft); line-height:1.6; }
+  .crew-detail-members-head{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:6px; }
+  .crew-detail-members-head h4{ margin:0; font-family:'Hahmlet',serif; font-size:.9rem; font-weight:600; }
+  .crew-detail-members{ max-height:216px; overflow-y:auto; display:flex; flex-direction:column; }
+  .cd-member{ display:flex; align-items:center; gap:10px; padding:7px 0; }
+  .cd-member .av{
+    width:30px; height:30px; border-radius:50%; flex:none; color:var(--surface);
+    display:flex; align-items:center; justify-content:center; font-family:'Hahmlet',serif; font-weight:600; font-size:.72rem;
+  }
+  .cd-member .nm{ font-size:.84rem; font-weight:500; }
+  .cd-more{ font-size:.74rem; color:var(--ink-soft); padding:7px 0 0; }
+
+  .fab{
+    position:absolute; right:18px; bottom:88px; z-index:20;
+    width:52px; height:52px; border-radius:50%; border:none;
+    background:var(--moss); color:var(--surface); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 12px 24px -10px rgba(0,0,0,.45);
+  }
+  .fab:hover{ background:color-mix(in srgb, var(--moss) 85%, black 15%); }
+
+  .photo-picker{ margin-top:4px; }
+  .photo-trigger{
+    width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    border:1.4px dashed var(--line); border-radius:16px; background:var(--surface-2); color:var(--ink-soft);
+    padding:24px 12px; cursor:pointer; font-size:.8rem; font-weight:600; font-family:'IBM Plex Sans KR',sans-serif;
+  }
+  .photo-trigger:hover{ border-color:var(--moss); color:var(--moss); }
+  .photo-preview{ position:relative; border-radius:16px; overflow:hidden; aspect-ratio:16/10; background:var(--surface-2); }
+  .photo-preview img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .photo-remove{
+    position:absolute; top:8px; right:8px; width:28px; height:28px; border-radius:50%;
+    background:rgba(0,0,0,.55); color:#fff; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+
   .section-title{ display:flex; align-items:baseline; justify-content:space-between; }
   .section-title h3{ margin:0; font-family:'Hahmlet',serif; font-size:1.02rem; font-weight:600; }
   .section-title .see-all{ font-size:.74rem; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; }
@@ -506,6 +554,8 @@
   <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3Z"/><path d="M13.5 7.5l3 3"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5c2-1 4.5-1 7 0v13c-2.5-1-5-1-7 0v-13Z"/><path d="M20 5.5c-2-1-4.5-1-7 0v13c2.5-1 5-1 7 0v-13Z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1-2h7l1 2h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9Z"/><circle cx="12" cy="13" r="3.4"/></symbol>
 </svg>
 
 <div class="masthead">
@@ -666,34 +716,54 @@
         <div class="crew-head">
           <h3>크루</h3>
           <div class="crew-actions">
-            <button class="crew-make" type="button" onclick="toast('크루 만들기 화면은 준비 중이에요')">만들기</button>
+            <button class="crew-make" type="button" onclick="openCreateCrew()">만들기</button>
             <button class="crew-info" type="button" onclick="toast('크루는 같은 목표를 가진 사람들이 함께 기록을 나누는 소모임이에요')">
               <svg class="icon" width="14" height="14"><use href="#i-users"/></svg>크루란?
             </button>
           </div>
         </div>
         <div class="crew-scroll">
-          <button class="crew-card" type="button" onclick="toast('크루 상세 화면은 준비 중이에요')">
+          <button class="crew-card" type="button"
+            data-name="새벽 기상 클럽" data-category="아침 습관" data-icon="i-sun" data-grad="var(--g-amber)"
+            data-intro="매일 아침 6시, 하루를 가장 먼저 시작하는 사람들의 모임이에요." data-count="1,204" data-joined="true"
+            data-members="이서준:moss|박준서:amber|김하늘:moss|정다은:rose|최우진:ink"
+            onclick="openCrewDetail(this)">
             <span class="crew-thumb" style="background:var(--g-amber)"><svg class="icon" width="30" height="30"><use href="#i-sun"/></svg></span>
             <span class="crew-name">새벽 기상 클럽</span>
             <span class="crew-count">멤버 1,204</span>
           </button>
-          <button class="crew-card" type="button" onclick="toast('크루 상세 화면은 준비 중이에요')">
+          <button class="crew-card" type="button"
+            data-name="독서 나이테 모임" data-category="독서" data-icon="i-book" data-grad="var(--g-moss)"
+            data-intro="한 달에 책 한 권, 함께 읽고 생각을 나눠요." data-count="356" data-joined="true"
+            data-members="이서준:moss|김하늘:moss|최민아:rose|한소희:amber"
+            onclick="openCrewDetail(this)">
             <span class="crew-thumb" style="background:var(--g-moss)"><svg class="icon" width="30" height="30"><use href="#i-book"/></svg></span>
             <span class="crew-name">독서 나이테 모임</span>
             <span class="crew-count">멤버 356</span>
           </button>
-          <button class="crew-card" type="button" onclick="toast('크루 상세 화면은 준비 중이에요')">
+          <button class="crew-card" type="button"
+            data-name="미니멀 러닝 크루" data-category="운동" data-icon="i-flame" data-grad="var(--g-rose)"
+            data-intro="짧게라도 매일 뛰는 걸 목표로 하는 러너들의 모임이에요." data-count="812" data-joined="true"
+            data-members="이서준:moss|박준서:amber|오세훈:rose|김도윤:ink"
+            onclick="openCrewDetail(this)">
             <span class="crew-thumb" style="background:var(--g-rose)"><svg class="icon" width="30" height="30"><use href="#i-flame"/></svg></span>
             <span class="crew-name">미니멀 러닝 크루</span>
             <span class="crew-count">멤버 812</span>
           </button>
-          <button class="crew-card" type="button" onclick="toast('크루 상세 화면은 준비 중이에요')">
+          <button class="crew-card" type="button"
+            data-name="자격증 스터디 크루" data-category="학습" data-icon="i-trophy" data-grad="var(--g-ink)"
+            data-intro="각자의 목표 자격증을 향해 함께 공부를 인증하는 크루예요." data-count="240" data-joined="false"
+            data-members="최민아:rose|강태민:amber|배수지:moss"
+            onclick="openCrewDetail(this)">
             <span class="crew-thumb" style="background:var(--g-ink)"><svg class="icon" width="30" height="30"><use href="#i-trophy"/></svg></span>
             <span class="crew-name">자격증 스터디 크루</span>
             <span class="crew-count">멤버 240</span>
           </button>
-          <button class="crew-card" type="button" onclick="toast('크루 상세 화면은 준비 중이에요')">
+          <button class="crew-card" type="button"
+            data-name="저녁 글쓰기 모임" data-category="글쓰기" data-icon="i-edit" data-grad="var(--g-dual)"
+            data-intro="하루를 마무리하며 세 줄이라도 기록하는 사람들의 모임이에요." data-count="128" data-joined="false"
+            data-members="최민아:rose|윤하은:amber"
+            onclick="openCrewDetail(this)">
             <span class="crew-thumb" style="background:var(--g-dual)"><svg class="icon" width="30" height="30"><use href="#i-edit"/></svg></span>
             <span class="crew-name">저녁 글쓰기 모임</span>
             <span class="crew-count">멤버 128</span>
@@ -811,6 +881,10 @@
     </button>
   </nav>
 
+  <button class="fab" id="fab-new-post" type="button" aria-label="오늘의 기록 올리기" onclick="openNewPost()" hidden>
+    <svg class="icon" width="24" height="24"><use href="#i-plus"/></svg>
+  </button>
+
   <div class="toast" id="toast"></div>
 
   <div class="modal-backdrop" id="settings-backdrop" hidden onclick="closeSettings(event)">
@@ -829,6 +903,89 @@
       <button type="button" class="btn-solid" style="width:100%; margin-top:18px; padding:11px;" onclick="closeSettings()">확인</button>
     </div>
   </div>
+
+  <div class="modal-backdrop" id="create-crew-backdrop" hidden onclick="closeCreateCrew(event)">
+    <div class="modal-sheet" role="dialog" aria-modal="true" aria-label="크루 만들기" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <h3>크루 만들기</h3>
+      <form onsubmit="createCrew(event)">
+        <label class="field-label" for="new-crew-name">크루 이름</label>
+        <input type="text" id="new-crew-name" class="field-input" placeholder="예: 저녁 산책 모임" maxlength="20" required>
+
+        <label class="field-label" for="new-crew-intro">한 줄 소개</label>
+        <input type="text" id="new-crew-intro" class="field-input" placeholder="크루를 한 문장으로 소개해보세요" maxlength="60">
+
+        <div class="field-label">카테고리</div>
+        <div class="chips" id="new-crew-category">
+          <button type="button" class="chip cat" data-cat="아침 습관" data-icon="i-sun" data-grad="var(--g-amber)" onclick="selectCategory(this)">아침 습관</button>
+          <button type="button" class="chip cat" data-cat="독서" data-icon="i-book" data-grad="var(--g-moss)" onclick="selectCategory(this)">독서</button>
+          <button type="button" class="chip cat" data-cat="운동" data-icon="i-flame" data-grad="var(--g-rose)" onclick="selectCategory(this)">운동</button>
+          <button type="button" class="chip cat" data-cat="학습" data-icon="i-trophy" data-grad="var(--g-ink)" onclick="selectCategory(this)">학습</button>
+          <button type="button" class="chip cat" data-cat="글쓰기" data-icon="i-edit" data-grad="var(--g-dual)" onclick="selectCategory(this)">글쓰기</button>
+        </div>
+
+        <button type="submit" class="btn-solid" style="width:100%; margin-top:18px; padding:11px;">만들기</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="crew-backdrop" hidden onclick="closeCrewDetail(event)">
+    <div class="modal-sheet" role="dialog" aria-modal="true" aria-label="크루 정보" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div class="crew-detail-head">
+        <span class="crew-thumb" id="cd-thumb" style="width:60px;height:60px;border-radius:18px;flex:none;">
+          <svg class="icon" id="cd-icon" width="26" height="26"><use href="#i-sun"/></svg>
+        </span>
+        <div class="crew-detail-info">
+          <div class="crew-detail-name" id="cd-name">크루 이름</div>
+          <span class="tag" id="cd-category">카테고리</span>
+        </div>
+      </div>
+      <p class="crew-detail-intro" id="cd-intro"></p>
+      <div class="crew-detail-members-head">
+        <h4>멤버</h4><span class="see-all" id="cd-count">0명</span>
+      </div>
+      <div class="crew-detail-members" id="cd-members"></div>
+      <button type="button" class="btn-solid" id="cd-join" style="width:100%; margin-top:16px; padding:11px;" onclick="toggleCrewJoin()">가입하기</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="new-post-backdrop" hidden onclick="closeNewPost(event)">
+    <div class="modal-sheet" role="dialog" aria-modal="true" aria-label="오늘의 기록 올리기" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <h3>오늘의 기록 올리기</h3>
+      <form onsubmit="createPost(event)">
+        <label class="field-label">사진 (선택)</label>
+        <div class="photo-picker">
+          <input type="file" id="new-post-photo" accept="image/*" hidden onchange="previewPostPhoto(event)">
+          <button type="button" class="photo-trigger" id="photo-trigger" onclick="document.getElementById('new-post-photo').click()">
+            <svg class="icon" width="22" height="22"><use href="#i-camera"/></svg>
+            <span>사진 추가</span>
+          </button>
+          <div class="photo-preview" id="photo-preview" hidden>
+            <img id="photo-preview-img" alt="첨부한 사진 미리보기">
+            <button type="button" class="photo-remove" aria-label="사진 제거" onclick="removePostPhoto()">
+              <svg class="icon" width="14" height="14"><use href="#i-close"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <label class="field-label" for="new-post-text">오늘의 기록</label>
+        <textarea id="new-post-text" class="field-input" rows="3" maxlength="200" placeholder="오늘 어떤 걸 실천했나요?" required></textarea>
+
+        <div class="field-label">카테고리</div>
+        <div class="chips" id="new-post-category">
+          <button type="button" class="chip cat" data-cat="아침 습관" data-icon="i-sun" data-grad="var(--g-amber)" onclick="selectCategory(this)">아침 습관</button>
+          <button type="button" class="chip cat" data-cat="독서" data-icon="i-book" data-grad="var(--g-moss)" onclick="selectCategory(this)">독서</button>
+          <button type="button" class="chip cat" data-cat="운동" data-icon="i-flame" data-grad="var(--g-rose)" onclick="selectCategory(this)">운동</button>
+          <button type="button" class="chip cat" data-cat="학습" data-icon="i-trophy" data-grad="var(--g-ink)" onclick="selectCategory(this)">학습</button>
+          <button type="button" class="chip cat" data-cat="글쓰기" data-icon="i-edit" data-grad="var(--g-dual)" onclick="selectCategory(this)">글쓰기</button>
+        </div>
+
+        <button type="submit" class="btn-solid" style="width:100%; margin-top:18px; padding:11px;">기록 올리기</button>
+      </form>
+    </div>
+  </div>
 </div>
 
 <p class="hint">하단 탭의 <b>커뮤니티</b>와 <b>프로필</b>을 눌러 두 화면을 오가며 확인해보세요.</p>
@@ -839,6 +996,7 @@
     document.getElementById('view-community').hidden = name !== 'community';
     document.getElementById('tab-profile').classList.toggle('active', name === 'profile');
     document.getElementById('tab-community').classList.toggle('active', name === 'community');
+    document.getElementById('fab-new-post').hidden = name !== 'community';
     document.querySelector('#view-' + name + ' .scroll').scrollTop = 0;
   }
 
@@ -906,6 +1064,228 @@
     document.getElementById('schedule-list').hidden = locked;
     document.getElementById('sch-form').hidden = locked;
     document.getElementById('sch-locked').hidden = !locked;
+  }
+
+  let newPostPhotoData = null;
+
+  function openNewPost(){
+    document.getElementById('new-post-backdrop').hidden = false;
+    document.getElementById('new-post-text').focus();
+  }
+  function closeNewPost(event){
+    document.getElementById('new-post-backdrop').hidden = true;
+  }
+
+  function previewPostPhoto(event){
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      newPostPhotoData = reader.result;
+      document.getElementById('photo-preview-img').src = newPostPhotoData;
+      document.getElementById('photo-preview').hidden = false;
+      document.getElementById('photo-trigger').hidden = true;
+    };
+    reader.readAsDataURL(file);
+  }
+  function removePostPhoto(){
+    newPostPhotoData = null;
+    document.getElementById('new-post-photo').value = '';
+    document.getElementById('photo-preview').hidden = true;
+    document.getElementById('photo-trigger').hidden = false;
+  }
+
+  function createPost(event){
+    event.preventDefault();
+    const textInput = document.getElementById('new-post-text');
+    const text = textInput.value.trim();
+    const catBtn = document.querySelector('#new-post-category .chip.on');
+
+    if (!text || !catBtn) {
+      toast('기록 내용과 카테고리를 확인해주세요');
+      return;
+    }
+
+    const category = catBtn.dataset.cat;
+    const icon = catBtn.dataset.icon;
+    const grad = catBtn.dataset.grad;
+
+    const mediaHtml = newPostPhotoData
+      ? '<div class="post-media"><img src="' + newPostPhotoData + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></div>'
+      : '<div class="post-media" style="background:' + grad + '"><svg class="icon" width="38" height="38"><use href="#' + icon + '"/></svg></div>';
+
+    const article = document.createElement('article');
+    article.className = 'post';
+    article.innerHTML =
+      '<div class="post-head">' +
+        '<div class="post-avatar" style="background:var(--moss)">서</div>' +
+        '<div class="who"><div class="n">이서준 · @seojun_grows</div><div class="t">방금 전</div></div>' +
+        '<button class="post-more" type="button" aria-label="게시글 옵션" onclick="toast(\'게시글 옵션은 준비 중이에요\')"><svg class="icon" width="16" height="16"><use href="#i-more"/></svg></button>' +
+      '</div>' +
+      '<p class="post-text"></p>' +
+      mediaHtml +
+      '<span class="tag post-tag"></span>' +
+      '<div class="post-foot">' +
+        '<button class="react" type="button" onclick="toggleLike(this,0)"><svg class="icon" width="17" height="17"><use href="#i-heart"/></svg><span class="cnt">0</span></button>' +
+        '<button class="react comment-toggle" type="button" aria-expanded="false" onclick="toggleComments(this)"><svg class="icon" width="17" height="17"><use href="#i-comment"/></svg><span class="cnt">0</span></button>' +
+        '<span class="react" style="margin-left:auto"><svg class="icon" width="16" height="16"><use href="#i-share"/></svg></span>' +
+      '</div>' +
+      '<div class="comments" hidden>' +
+        '<div class="comment-list"></div>' +
+        '<form class="comment-form" onsubmit="submitComment(event)">' +
+          '<input type="text" placeholder="댓글을 남겨보세요" aria-label="댓글 입력" maxlength="140">' +
+          '<button type="submit">등록</button>' +
+        '</form>' +
+      '</div>';
+
+    article.querySelector('.post-text').textContent = text;
+    article.querySelector('.post-tag').textContent = category + ' 인증';
+
+    document.querySelector('.feed').prepend(article);
+
+    textInput.value = '';
+    document.getElementById('new-post-category').querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+    removePostPhoto();
+    closeNewPost();
+    toast('오늘의 기록을 올렸어요!');
+    article.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+  }
+
+  const CREW_COLORS = { moss:'var(--moss)', amber:'var(--amber)', rose:'var(--rose)', ink:'var(--ink-soft)' };
+
+  function openCreateCrew(){
+    document.getElementById('create-crew-backdrop').hidden = false;
+    document.getElementById('new-crew-name').focus();
+  }
+  function closeCreateCrew(event){
+    document.getElementById('create-crew-backdrop').hidden = true;
+  }
+
+  function selectCategory(btn){
+    btn.closest('.chips').querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+    btn.classList.add('on');
+  }
+
+  function createCrew(event){
+    event.preventDefault();
+    const nameInput = document.getElementById('new-crew-name');
+    const introInput = document.getElementById('new-crew-intro');
+    const catBtn = document.querySelector('#new-crew-category .chip.on');
+    const name = nameInput.value.trim();
+
+    if (!name || !catBtn) {
+      toast('크루 이름과 카테고리를 모두 선택해주세요');
+      return;
+    }
+
+    const category = catBtn.dataset.cat;
+    const icon = catBtn.dataset.icon;
+    const grad = catBtn.dataset.grad;
+    const intro = introInput.value.trim() || (category + ' 목표로 모인 크루예요.');
+
+    const card = document.createElement('button');
+    card.className = 'crew-card';
+    card.type = 'button';
+    card.dataset.name = name;
+    card.dataset.category = category;
+    card.dataset.icon = icon;
+    card.dataset.grad = grad;
+    card.dataset.intro = intro;
+    card.dataset.count = '1';
+    card.dataset.joined = 'true';
+    card.dataset.members = '이서준:moss';
+    card.onclick = () => openCrewDetail(card);
+    card.innerHTML =
+      '<span class="crew-thumb" style="background:' + grad + '"><svg class="icon" width="30" height="30"><use href="#' + icon + '"/></svg></span>' +
+      '<span class="crew-name"></span>' +
+      '<span class="crew-count">멤버 1</span>';
+    card.querySelector('.crew-name').textContent = name;
+
+    document.getElementById('new-crew-category').querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+    document.querySelector('.crew-scroll').appendChild(card);
+    card.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', inline: 'end', block: 'nearest' });
+
+    nameInput.value = '';
+    introInput.value = '';
+    closeCreateCrew();
+    toast('\'' + name + '\' 크루를 만들었어요!');
+  }
+
+  let currentCrewCard = null;
+
+  function renderCrewMembers(){
+    const list = (currentCrewCard.dataset.members || '').split('|').filter(Boolean);
+    const wrap = document.getElementById('cd-members');
+    wrap.innerHTML = '';
+    list.forEach(pair => {
+      const [nm, col] = pair.split(':');
+      const row = document.createElement('div');
+      row.className = 'cd-member';
+      row.innerHTML = '<span class="av" style="background:' + (CREW_COLORS[col] || 'var(--ink-soft)') + '"></span><span class="nm"></span>';
+      row.querySelector('.av').textContent = nm.charAt(0);
+      row.querySelector('.nm').textContent = nm === '이서준' ? nm + ' (나)' : nm;
+      wrap.appendChild(row);
+    });
+
+    const total = parseInt((currentCrewCard.dataset.count || '0').replace(/,/g, ''), 10) || list.length;
+    document.getElementById('cd-count').textContent = total.toLocaleString() + '명';
+    const remain = total - list.length;
+    const more = document.getElementById('cd-more');
+    if (more) more.remove();
+    if (remain > 0) {
+      const note = document.createElement('div');
+      note.className = 'cd-more';
+      note.id = 'cd-more';
+      note.textContent = '외 ' + remain.toLocaleString() + '명이 함께하고 있어요';
+      wrap.appendChild(note);
+    }
+  }
+
+  function openCrewDetail(card){
+    currentCrewCard = card;
+    const d = card.dataset;
+
+    document.getElementById('cd-thumb').style.background = d.grad;
+    document.getElementById('cd-icon').innerHTML = '<use href="#' + d.icon + '"/>';
+    document.getElementById('cd-name').textContent = d.name;
+    document.getElementById('cd-category').textContent = d.category;
+    document.getElementById('cd-intro').textContent = d.intro;
+    renderCrewMembers();
+
+    const joinBtn = document.getElementById('cd-join');
+    const joined = d.joined === 'true';
+    joinBtn.textContent = joined ? '가입됨' : '가입하기';
+    joinBtn.classList.toggle('joined', joined);
+
+    document.getElementById('crew-backdrop').hidden = false;
+  }
+  function closeCrewDetail(event){
+    document.getElementById('crew-backdrop').hidden = true;
+  }
+
+  function toggleCrewJoin(){
+    if (!currentCrewCard) return;
+    const d = currentCrewCard.dataset;
+    const joined = d.joined === 'true';
+    const members = (d.members || '').split('|').filter(Boolean);
+    let count = parseInt((d.count || '0').replace(/,/g, ''), 10) || 0;
+
+    if (joined) {
+      d.members = members.filter(m => !m.startsWith('이서준:')).join('|');
+      count = Math.max(0, count - 1);
+    } else {
+      d.members = ['이서준:moss'].concat(members).join('|');
+      count = count + 1;
+    }
+    d.joined = String(!joined);
+    d.count = count.toLocaleString();
+
+    currentCrewCard.querySelector('.crew-count').textContent = '멤버 ' + count.toLocaleString();
+
+    const joinBtn = document.getElementById('cd-join');
+    joinBtn.textContent = !joined ? '가입됨' : '가입하기';
+    joinBtn.classList.toggle('joined', !joined);
+    renderCrewMembers();
   }
 
   function jump(id){
