@@ -1,0 +1,95 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+@import 'tailwindcss';
+
+:root {
+  color-scheme: light;
+
+  /* Neutrals */
+  --bg: #f7f7fb;
+  --surface: #ffffff;
+  --border: #ecebf2;
+  --text: #17171c;
+  --text-muted: #8b8a97;
+  --text-faint: #b4b3bd;
+
+  /* Toss-ish blue (structure / trust) */
+  --brand: #3182f6;
+  --brand-weak: #eaf2ff;
+  --brand-strong: #1b64da;
+
+  /* Duolingo-ish green (streak / motivation) */
+  --growth: #22c55e;
+  --growth-weak: #e9f9ee;
+
+  /* Playful accents for project colors */
+  --coral: #ff6b6b;
+  --amber: #ffb020;
+  --violet: #8b5cf6;
+  --teal: #14b8a6;
+  --pink: #ec4899;
+
+  --danger: #ff4d4f;
+
+  --shadow-sm: 0 1px 2px rgba(23, 23, 28, 0.04);
+  --shadow-md: 0 8px 24px rgba(23, 23, 28, 0.08);
+  --shadow-lg: 0 16px 40px rgba(23, 23, 28, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    'Pretendard Variable',
+    Pretendard,
+    -apple-system,
+    system-ui,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+textarea {
+  font-family: inherit;
+}
+
+/* Hide scrollbar on the horizontal timeline / chip rows but keep it scrollable */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.animate-pop {
+  animation: pop-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
